@@ -14,7 +14,7 @@ function RowPost(props) {
       console.log(response.data);
       setmovies(response.data.results)
     }).catch(err=>{
-      toast.error('Trailer not found')
+      toast.error(' not found')
     })
   },[])
 
@@ -28,11 +28,13 @@ function RowPost(props) {
   };
 const handleMovie = (id)=>{
  console.log(id);
+ 
  axios.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en`).then(response=>{
+  debugger;
   if(response.data.results.length!==0){
-    setUrlId(response.data.results[0])
+    response.data.results[0].id === UrlId.id ? setUrlId(null) :  setUrlId(response.data.results[0])
   } else {
-    console.log('Array empty');
+    toast.error('Trailer not found')
     
   }
  }).catch(err=>{
@@ -50,7 +52,6 @@ const handleMovie = (id)=>{
         .map((obj)=>
               <img onClick={()=>handleMovie(obj.id)} className={props.isSmall ? 'smallPoster' : 'poster'} src={`${imageUrl+obj.backdrop_path}`} alt="poster" /> 
         )}
-
       </div>
      { UrlId && <Youtube videoId= {UrlId.key} opts={opts} /> }
     </div>
